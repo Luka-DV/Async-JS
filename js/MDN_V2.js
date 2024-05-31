@@ -111,16 +111,16 @@ fecthPromiseFail
     });
  */
 
-// promises - three primary states: pending, fulfilled, rejecte
+// promises - three primary states: pending, fulfilled, rejected
 // settled > both fulfilled and rejected
 // resolved > settled or "locked in" to follow the state of another promise
 
 
 //Promise.all() > ...takes an array of promises and returns a single promise.
-//when you have more promises but they dont depen on each other. 
-// the promise is fulfilled (then()) if all the promises are fulfilled > then() is called with an array of all the responses
+//when you have more promises but they dont depend on each other. 
+// the promise is fulfilled (then()) if all the promises are fulfilled > then() is called with an array of all the responses in order
 // rejected if any of the promises are rejected > catch() is called with the error thrown by the promise that rejected
-
+/* 
 const fetchPromise1 = fetch(
     "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json",
 );
@@ -139,10 +139,36 @@ Promise.all([fetchPromise1, fetchPromise2, fetchPromise3])
         }
     })
     .catch( error => {
-        console.log(`Failed to fetch: ${error}`);
-    })
-
+        console.error(`Failed to fetch: ${error}`);
+    }) 
+ */
 // Output:
 // https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json: 200
 // https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/not-found: 404
 // https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json: 200
+
+//with a badly formed URL: "Failed to fetch: TypeError: Failed to fetch"
+
+
+//Promise.any() >...same as Promise.all(), but ut is fulfilled as soon as any promise is fulfilled or all are rejected
+
+const fetchPromise1b = fetch(
+    "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json",
+);
+const fetchPromise2b = fetch(
+    "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/not-found",
+);
+const fetchPromise3b = fetch(
+    "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json",
+);
+
+Promise.any([fetchPromise1b, fetchPromise2b, fetchPromise3b])
+    .then(response => {
+        console.log(`${response.url}: ${response.status}`);
+    })
+    .catch(err => {
+        console.error(`Failed to fetch: ${err}`);
+    });
+
+
+    
