@@ -34,7 +34,8 @@ function doStep1(init, callback) {
 For these reasons, most modern asynchronous APIs don't use callbacks. Instead, the foundation of asynchronous programming in JavaScript is the Promise... */
 
 
-// Promises
+// PROMISES
+
 /* 
 const fetchPromise = fetch(
     "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json",
@@ -115,7 +116,7 @@ fecthPromiseFail
 // settled > both fulfilled and rejected
 // resolved > settled or "locked in" to follow the state of another promise
 
-
+//PROMISE.ALL
 //Promise.all() > ...takes an array of promises and returns a single promise.
 //when you have more promises but they dont depend on each other. 
 // the promise is fulfilled (then()) if all the promises are fulfilled > then() is called with an array of all the responses in order
@@ -130,6 +131,7 @@ const fetchPromise2 = fetch(
 const fetchPromise3 = fetch(
     "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json",
 );
+
 
 Promise.all([fetchPromise1, fetchPromise2, fetchPromise3])
     .then( responses => {
@@ -149,9 +151,10 @@ Promise.all([fetchPromise1, fetchPromise2, fetchPromise3])
 
 //with a badly formed URL: "Failed to fetch: TypeError: Failed to fetch"
 
+//PROMISE.ANY
 
 //Promise.any() >...same as Promise.all(), but ut is fulfilled as soon as any promise is fulfilled or all are rejected
-
+/* 
 const fetchPromise1b = fetch(
     "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json",
 );
@@ -169,6 +172,59 @@ Promise.any([fetchPromise1b, fetchPromise2b, fetchPromise3b])
     .catch(err => {
         console.error(`Failed to fetch: ${err}`);
     });
+ */
 
+// ASYNC AND AWAIT
 
-    
+//function:
+
+async function myFunction() {
+    //async function
+};
+
+// inside you can use the await keyword before a call to a function that returns a promise - the code waits here until the promise is settled (fulfilled/rejected)
+
+//enables to write async code like sync code, the above fetch example rewritten:
+
+//orig:
+/* 
+const fetchPromise = fetch(
+    "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json",
+);
+
+fetchPromise
+    .then(response => {
+        if(!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data[0].name);
+    })
+    .catch(error => {
+        console.log(`Could not get products: ${error}`);
+    });
+ */
+
+//async:
+
+async function fetchProducts() {
+    try {
+        const response = await fetch( //will return a Response or throw an error
+            "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json",
+        );
+        if(!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+        }
+
+        const data = await response.json(); //will return the parsed JSON object or throw an error
+
+        console.log(console.log(data[1].name));
+        
+    } catch(error) {
+        console.log(`Could not get products: ${error}`);
+    }
+}
+
+fetchProducts();
