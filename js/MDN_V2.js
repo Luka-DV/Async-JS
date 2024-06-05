@@ -207,7 +207,7 @@ fetchPromise
     });
  */
 
-//async:
+//async: //NOTE: async funcitons always return a promise!
 
 async function fetchProducts() {
     try {
@@ -227,4 +227,98 @@ async function fetchProducts() {
     }
 }
 
-fetchProducts();
+// fetchProducts();
+
+//example of using the async function if you are returning the data:
+
+async function fetchProducts2() {
+    const response = await fetch(
+        "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json",
+    );
+    if(!response.ok) {
+        throw new Error(`HTTP: error: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log(data[2].name)
+    return data;
+}
+
+const promise = fetchProducts2(); //promise holds a promise
+
+
+promise
+    .then(data => {
+        console.log(data[2].name);
+    })
+    .catch(error => {
+        console.error(`Could not get products: ${error}`);
+    })
+
+//just like a promise chain, await forces asynchronous operations to be completed in series. This is necessary if the result of the next operation depends on the result of the last one, but if that's not the case then something like Promise.all() will be more performant.
+
+
+// Implementing an alarm API:
+
+/* 
+const output = document.querySelector("#output");
+const button = document.querySelector("#set-alarm");
+
+function setAlarm() {
+    setTimeout(() => {
+        output.textContent = "Wake up!"
+    }, 1000);
+}
+
+button.addEventListener("click", setAlarm);
+ */
+
+//using classes:
+
+/* class alarmClockClass {
+    constructor() {
+        this._output = document.querySelector("#output");
+        this._button = document.querySelector("#set-alarm");
+    }
+
+    get output() {
+        return this._output;
+    }
+
+    get button() {
+        return this._button;
+    }
+
+    setAlarm() {
+        setTimeout(() => {
+            this._output.textContent = "Wake up!"
+        }, 1000)
+    }
+    
+} */
+
+class alarmClockClass {
+    
+       #output = document.querySelector("#output");
+       #button = document.querySelector("#set-alarm");
+
+
+    get output() {
+        return this.#output;
+    }
+
+    get button() {
+        return this.#button;
+    }
+
+    setAlarm() {
+        setTimeout(() => {
+            this.#output.textContent = "Wake up!"
+        }, 1000)
+    }
+    
+}
+
+const alarmClock = new alarmClockClass();
+alarmClock.button.addEventListener("click", () => {
+    alarmClock.setAlarm();
+});
