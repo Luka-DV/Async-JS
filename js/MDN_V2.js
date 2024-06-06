@@ -274,7 +274,7 @@ button.addEventListener("click", setAlarm);
 
 //using classes:
 
-/* class alarmClockClass {
+/* class AlarmClock {
     constructor() {
         this._output = document.querySelector("#output");
         this._button = document.querySelector("#set-alarm");
@@ -296,29 +296,33 @@ button.addEventListener("click", setAlarm);
     
 } */
 
-class alarmClockClass {
+// refactored:
+
+class AlarmClock {
     
-       #output = document.querySelector("#output");
-       #button = document.querySelector("#set-alarm");
+    #output;
+    #button;
 
-
-    get output() {
-        return this.#output;
+    constructor() {
+        this.#output = document.querySelector("#output");
+        this.#button = document.querySelector("#set-alarm");
     }
 
-    get button() {
-        return this.#button;
-    }
 
     setAlarm() {
         setTimeout(() => {
             this.#output.textContent = "Wake up!"
         }, 1000)
     }
+
+    addEventListenerToButton() {
+        this.#button.addEventListener("click", () => { //if I would have used a regular function in the eventListener I would have to .bind() the setAlarm() method to the class instance: this.#button.addEventListener("click", this.setAlarm.bind(this));
+            this.setAlarm();
+        })
+    }
     
 }
 
-const alarmClock = new alarmClockClass();
-alarmClock.button.addEventListener("click", () => {
-    alarmClock.setAlarm();
-});
+const alarmClock = new AlarmClock();
+alarmClock.addEventListenerToButton();
+
