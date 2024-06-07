@@ -15,6 +15,18 @@ img{
   margin: 0 auto;
 }
 
+.container{
+  padding: 1%;
+}
+
+.container > section{
+  margin-bottom: 5px;
+}
+
+input{
+  width: clamp(85px, 10%, 170px);
+}
+
 
 /******************************************
 /* ADDITIONAL STYLES
