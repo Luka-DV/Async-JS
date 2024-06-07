@@ -298,6 +298,7 @@ button.addEventListener("click", setAlarm);
 
 // refactored:
 
+/* 
 class AlarmClock {
     
     #output;
@@ -316,13 +317,47 @@ class AlarmClock {
     }
 
     addEventListenerToButton() {
-        this.#button.addEventListener("click", () => { //if I would have used a regular function in the eventListener I would have to .bind() the setAlarm() method to the class instance: this.#button.addEventListener("click", this.setAlarm.bind(this));
+        this.#button.addEventListener("click", () => { 
             this.setAlarm();
         })
     }
+
+    //if I would have used a regular function in the eventListener I would have to .bind() the setAlarm() method to the class instance: this.#button.addEventListener("click", this.setAlarm.bind(this));
     
 }
 
 const alarmClock = new AlarmClock();
 alarmClock.addEventListenerToButton();
 
+ */
+
+
+// alarm() API:
+
+
+const name = document.querySelector("#name");
+const delay = document.querySelector("#delay");
+const button = document.querySelector("#set-alarm");
+const output = document.querySelector("#output");
+
+
+function alarm(person, delay) {
+    return new Promise((resolve, reject) => {
+        if(delay < 0) {
+            throw new Error("Alarm delay must not be negative");
+        }
+        setTimeout( () => {
+            resolve(`Wake up, ${person}!`);
+        }, delay);
+    });
+}
+
+button.addEventListener("click", () => {
+    alarm(name.value, delay.value)
+        .then(message => {
+            output.textContent = message;
+        })
+        .catch( error => {
+            output.textContent = `Couldn't set alarm: ${error}`;
+        })
+})
