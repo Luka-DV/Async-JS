@@ -334,7 +334,7 @@ alarmClock.addEventListenerToButton();
 
 // alarm() API:
 
-
+/* 
 const name = document.querySelector("#name");
 const delay = document.querySelector("#delay");
 const button = document.querySelector("#set-alarm");
@@ -361,3 +361,173 @@ button.addEventListener("click", () => {
             output.textContent = `Couldn't set alarm: ${error}`;
         })
 })
+ */
+
+/* 
+
+// refactored with a class:
+
+class Alarm {
+    #name;
+    #delay;
+    #button;
+    #output;
+
+    constructor() {
+         this.#name = document.querySelector("#name");
+         this.#delay = document.querySelector("#delay");
+         this.#button = document.querySelector("#set-alarm");
+         this.#output = document.querySelector("#output");
+         this.#button.addEventListener("click", () => {
+            this.alarm(this.#name.value, this.#delay.value)
+                .then(message => {
+                    this.#output.textContent = message;
+                })
+                .catch(error => {
+                    this.#output.textContent = `Couldn't set alarm: ${error}`;
+                })
+         });
+    }
+
+    alarm(person, delay) {
+        return new Promise((resolve, reject) => {
+            if(delay < 0) {
+                throw new Error("Alarm delay must not be negative");
+            }
+            setTimeout(() => {
+                resolve(`Wake up, ${person}!`)
+            }, delay)
+        })
+    }
+}
+ */
+
+//const alarm = new Alarm();
+
+//rewriten with a constructor function:
+
+/* 
+function AlarmClock() {
+    const name = document.querySelector("#name");
+    const delay = document.querySelector("#delay");
+    const button = document.querySelector("#set-alarm");
+    const output = document.querySelector("#output");
+
+    button.addEventListener("click", () => {
+        alarm(name.value, delay.value)
+            .then(message => {
+                output.textContent = message;
+            })
+            .catch( error => {
+                output.textContent = `Couldn't set alarm: ${error}`;
+            })
+    })
+
+    function alarm(person, delay) {
+        return new Promise((resolve, reject) => {
+            if(delay < 0) {
+                throw new Error("Alarm delay must not be negative");
+            }
+            setTimeout(() => {
+                resolve(`Wake up, ${person}!`)
+            }, delay)
+        })
+
+    }
+}
+
+ */
+//const alarm2 = new AlarmClock();
+
+
+//factory function exmaple: 
+/* 
+const alarmFactoryFunc = function() {
+    return {
+        name:  document.querySelector("#name"),
+        delay: document.querySelector("#delay"),
+        button: document.querySelector("#set-alarm"),
+        output: document.querySelector("#output"),
+
+        addListener: function() {
+            this.button.addEventListener("click", () => {
+                this.alarm(this.name.value, this.delay.value)
+                    .then(message => {
+                        this.output.textContent = message;
+                    })
+                    .catch( error => {
+                        this.output.textContent = `Couldn't set alarm: ${error}`;
+                    })
+        })
+        },
+    
+        alarm: function(person, delay) {
+            return new Promise((resolve, reject) => {
+                if(delay < 0) {
+                    throw new Error("Alarm delay must not be negative");
+                };
+                setTimeout(() => {
+                    resolve(`Wake up, ${person}!`)
+                }, delay);
+            })
+    
+        }
+    }
+}
+
+const alarm3 = alarmFactoryFunc();
+alarm3.addListener();
+ */
+
+//Class with better separation of concerns:
+
+
+class AlarmClockSuper {
+
+    #name;
+    #delay;
+    #button;
+    #output;
+
+    constructor() {
+        this.#domElementsInit();
+        this.#addEventListenerInit();
+    }
+
+    #domElementsInit() {
+        this.#name = document.querySelector("#name");
+        this.#delay = document.querySelector("#delay");
+        this.#button = document.querySelector("#set-alarm");
+        this.#output = document.querySelector("#output");
+    }
+
+    #addEventListenerInit() {
+        this.#button.addEventListener("click", () => {
+            this.alarm(this.#name.value, this.#delay.value)
+            .then( message => {
+                this.#output.textContent = message;
+            })
+            .catch( error => {
+                this.#output.textContent = `Couldn't set alarm: ${error}.`
+            })
+        })
+    }
+
+    alarm(person, delay) {
+        return new Promise((resolve, reject) => {
+            if(delay < 0) {
+                reject(new Error("Alarm delay must not be negative"));
+                return;
+                //throw new Error("Alarm delay must not be negative.")
+            }
+            setTimeout( () => {
+                console.log("hello")
+                resolve(`Wake up, ${person}!`);
+            }, delay)
+        })
+    }
+}
+
+// The key takeaway is to keep the constructor focused on initializing the instance, and handle setup logic in separate methods for better organization.
+
+const alarm4 = new AlarmClockSuper();
