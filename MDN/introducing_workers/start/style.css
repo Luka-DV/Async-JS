@@ -1,4 +1,12 @@
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 textarea {
   display: block;
   margin: 1rem 0;
-}
+} 
