@@ -571,7 +571,7 @@ button.addEventListener( "click", async () => {
  */
 
 
-// refactor with class: 
+// refactor async/await example with class: 
 
 class AlarmClockDuper {
     #name;
@@ -618,4 +618,23 @@ class AlarmClockDuper {
 }
 
 const alarm5 = new AlarmClockDuper();
+
+
+
+///// Introducing workers
+
+//"Workers give you the ability to run some tasks in a different thread, so you can start the task, then continue with other processing (such as handling user actions).""
+
+//workers can't access the DOM (if multiple threads can have access to the same shared data, this can cause bugs that are hard to find)
+//"...they can't access all the APIs that the main application can, and in particular can't access the DOM."
+
+//"The main thread and the worker don't directly share any variables, but communicate by sending messages, which are received by the other side as message events."
+
+//There are three different sorts of workers:
+
+//    - dedicated workers (means its used by a single script instance)> web worker
+//    - shared workers : can be shared by different scripts
+//    - service workers : act like proxy servers, caching resources for when the user is offline. Key component of Progressive Web Apps.
+
+
 
