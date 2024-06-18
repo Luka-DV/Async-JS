@@ -636,5 +636,3 @@ const alarm5 = new AlarmClockDuper();
 //    - shared workers : can be shared by different scripts
 //    - service workers : act like proxy servers, caching resources for when the user is offline. Key component of Progressive Web Apps.
 
-
-
