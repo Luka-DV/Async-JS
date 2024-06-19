@@ -51,7 +51,7 @@ const fruits = ["pineapple", "peach", "strawberry"];
 
 const fruitLoop1 = async () => {
     for(const fruit of fruits) {
-        const emoji = await getFruit(fruit);  //getFruit is an async function that returns a promise
+        const emoji = await getFruit(fruit);  //wait for every item to be resolved sequentaly
         const d = new Date();
         console.log(emoji, `${d.getSeconds()},${d.getMilliseconds()}`);
     }
@@ -70,5 +70,6 @@ const fruitLoop2 = async () => {
     }
 }
 
-fruitLoop2();
+//fruitLoop2();
+
 
